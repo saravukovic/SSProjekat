@@ -322,6 +322,10 @@ void Assembler::checkOperandAndAddToLiteralTable(string operand)
 		}
 
 	}
+	else if (type == SYMBOLMEM)
+	{
+		ldLitMem = true;
+	}
 	else if (type == REGLITMEM)
 	{
 		operand = sm.str(2);
