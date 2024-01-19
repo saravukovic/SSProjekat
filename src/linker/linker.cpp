@@ -247,7 +247,7 @@ void Linker::createSectionTable()
 				else
 				{
 					SectionDefinition* secInTable = sectionTable.at(secName);
-					s->addSectionOffset(secInTable->getSectionSize());
+					s->setSectionOffset(secInTable->getSectionOffset() + secInTable->getSectionSize());
 					secInTable->addSectionSize(s->getSectionSize());
 
 					for (char content : s->getContent()) {
@@ -277,6 +277,7 @@ void Linker::createSymbolTable()
 	for (string file : inputFilesLinker)
 	{
 		map<string, SymbolDefinition> symTable = symbolTables.at(file.substr(0, file.size() - 1) + "dat");
+		map<string, SectionDefinition*> originalSection = sectionTables.at(file.substr(0, file.size() - 1) + "dat");
 
 		for (auto& symbol : symTable) {
 			SymbolDefinition sym = symbol.second;
@@ -293,7 +294,7 @@ void Linker::createSymbolTable()
 					exit(-1);
 				}
 
-				SectionDefinition* section = sectionTable.at(sym.getSymbolsSection());
+				SectionDefinition* section = originalSection.at(sym.getSymbolsSection());
 
 				symbolTable.insert({ symbol.first, SymbolDefinition(symbol.first, sym.getSymbolsSection(), section->getSectionID(), NOTYPE, GLOBAL, section->getSectionOffset() + sym.getSymAdress(), false) });
 
