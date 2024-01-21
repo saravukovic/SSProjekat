@@ -1,10 +1,9 @@
 #include "..\inc\emulator.h"
 #include "..\inc\syntaxCheck.h"
 
-Emulator::Emulator(string input, string output, string binary) : GPReg(16, 0), CSReg(3, 0)
+Emulator::Emulator(string output, string binary) : GPReg(16, 0), CSReg(3, 0)
 {
 	string path = "C:\\Users\\Sara\\Desktop\\ssproba\\";
-	inputFile = path + input;
 	outputFile = path + output;
 	binaryFile = path + binary;
 	emul = false;
@@ -62,7 +61,7 @@ uint32_t Emulator::getBinaryContent(uint32_t source)
 {
 	uint32_t val = 0;
 	for (int i = 0; i < 4; i++) {
-		uint32_t c = ((uint32_t)memory.at(source + i) & 0xFF);
+		uint32_t c = ((uint32_t)memory[source + i] & 0xFF);
 		val |= ((uint32_t)(c << i * 8));
 	}
 	return val;
@@ -81,7 +80,7 @@ uint32_t Emulator::getInstruction(uint32_t source)
 void Emulator::writeBinaryContent(uint32_t content, uint32_t dest)
 {
 	for (int i = 0; i < 4; i++) {
-		memory.at(dest + i) = (char)(content >> (i * 8));
+		memory[dest + i] = (char)(content >> (i * 8));
 	}
 }
 
@@ -94,6 +93,7 @@ void Emulator::emulate()
 		wholeInstr = getInstruction(pc);
 		pc += 4;
 		disp = wholeInstr & 0x00000FFF;
+		if ((disp >> 2 * 4) & 8) disp |= 0xFFFFF000;
 		regC = (wholeInstr >> (3 * 4)) & 0x0000000F;
 		regB = (wholeInstr >> (4 * 4)) & 0x0000000F;
 		regA = (wholeInstr >> (5 * 4)) & 0x0000000F;
@@ -117,7 +117,7 @@ void Emulator::printReg()
 	file << setw(8) << setfill('0') << hex << pc << "\t";
 }
 
-void Emulator::executeInstr(uint32_t inst, uint32_t mod, uint32_t regA, uint32_t regB, uint32_t regC, uint32_t disp)
+void Emulator::executeInstr(uint32_t inst, uint32_t mod, uint32_t regA, uint32_t regB, uint32_t regC, int disp)
 {
 	//reg0 na nulu
 
@@ -129,6 +129,7 @@ void Emulator::executeInstr(uint32_t inst, uint32_t mod, uint32_t regA, uint32_t
 	case 0x1:
 		sp -= 4;
 		writeBinaryContent(CSReg[1], sp);
+		sp -= 4;
 		writeBinaryContent(pc, sp);
 		CSReg[2] = 4;
 		CSReg[0] = (CSReg[0] & (~0x1));

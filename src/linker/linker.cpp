@@ -5,6 +5,7 @@ Linker::Linker(list<string> input, string output, list<string> placement)
 	inputFileNameArrLinker = input;
 	outputFileNameLinker = output;
 	this->placement = placement;
+	pc = 0;
 }
 
 Linker::~Linker()

@@ -35,7 +35,7 @@ private:
 	map<string, SectionDefinition*> sectionTable;
 	map<string, unsigned int> placements;
 	map<string, SymbolDefinition> undefinedSymbols;
-	unsigned int pc, numOfLine, currSectionNum;
+	unsigned int pc;
 	list<string> inputFilesLinker, inputFileNameArrLinker, placement;
 	string outputFileLinker, outputFileNameLinker;
 	string currSection;

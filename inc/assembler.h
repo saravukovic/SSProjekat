@@ -57,7 +57,7 @@ private:
 	string inputFileName, outputFileName;
 	string currSection;
 	SyntaxCheck parser;
-	bool ldLitMem, assembling;
+	bool ldLitMem, assembling, symbolDefinedInSection;
 	list<string> formattedInputFile;
 
 };

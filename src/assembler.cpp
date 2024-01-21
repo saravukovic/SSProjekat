@@ -9,6 +9,8 @@ Assembler::Assembler(string input, string output) : pc(0), numOfLine(0)
 	parser = SyntaxCheck();
 	ldLitMem = false;
 	assembling = true;
+	symbolDefinedInSection = false;
+	currSectionNum = 0;
 }
 
 Assembler::~Assembler()
@@ -539,7 +541,10 @@ void Assembler::instructionInSecondPass(string* instr)
 		}
 		else {
 			currSec->addSectionBinaryContent(0x30);
-			currSec->addSectionBinaryContent(0x00);
+			if (symbolDefinedInSection)
+				currSec->addSectionBinaryContent(0xF0);
+			else
+				currSec->addSectionBinaryContent(0x00);
 		}
 		currSec->addSectionBinaryContent(literal[0]);
 		currSec->addSectionBinaryContent((literal[1] << 4) | literal[2]);
@@ -561,7 +566,10 @@ void Assembler::instructionInSecondPass(string* instr)
 		}
 		else {
 			currSec->addSectionBinaryContent(0x31);
-			currSec->addSectionBinaryContent(r1);
+			if(symbolDefinedInSection)
+				currSec->addSectionBinaryContent((0xF0) | r1);
+			else
+				currSec->addSectionBinaryContent(r1);
 		}
 		currSec->addSectionBinaryContent((r2 << 4) | literal[0]);
 		currSec->addSectionBinaryContent((literal[1] << 4) | literal[2]);
@@ -583,7 +591,10 @@ void Assembler::instructionInSecondPass(string* instr)
 		}
 		else {
 			currSec->addSectionBinaryContent(0x32);
-			currSec->addSectionBinaryContent(r1);
+			if (symbolDefinedInSection)
+				currSec->addSectionBinaryContent((0xF0) | r1);
+			else
+				currSec->addSectionBinaryContent(r1);
 		}
 		currSec->addSectionBinaryContent((r2 << 4) | literal[0]);
 		currSec->addSectionBinaryContent((literal[1] << 4) | literal[2]);
@@ -605,7 +616,10 @@ void Assembler::instructionInSecondPass(string* instr)
 		}
 		else {
 			currSec->addSectionBinaryContent(0x33);
-			currSec->addSectionBinaryContent(r1);
+			if (symbolDefinedInSection)
+				currSec->addSectionBinaryContent((0xF0) | r1);
+			else
+				currSec->addSectionBinaryContent(r1);
 		}
 		currSec->addSectionBinaryContent((r2 << 4) | literal[0]);
 		currSec->addSectionBinaryContent((literal[1] << 4) | literal[2]);
@@ -640,7 +654,7 @@ void Assembler::instructionInSecondPass(string* instr)
 		char rs = regToChar(sm.str(2));
 		char rd = regToChar(sm.str(3));
 
-		currSec->addSectionBinaryContent(0x80);
+		currSec->addSectionBinaryContent(0x40);
 		currSec->addSectionBinaryContent(rd);
 		currSec->addSectionBinaryContent(rs << 4);
 		currSec->addSectionBinaryContent(0x00);
@@ -802,8 +816,8 @@ void Assembler::instructionInSecondPass(string* instr)
 
 		char gpr = regToChar(sm.str(2));
 
-		currSec->addSectionBinaryContent(0x90);
-		currSec->addSectionBinaryContent((gpr << 4) | csr);
+		currSec->addSectionBinaryContent(0x94);
+		currSec->addSectionBinaryContent((csr << 4) | gpr);
 		currSec->addSectionBinaryContent(0x00);
 		currSec->addSectionBinaryContent(0x00);
 		pc += 4;
@@ -963,10 +977,11 @@ void Assembler::getSymOrLitAdrSecPass(string operand, char* adress)
 			if (sym.isSymbolDefined()) {
 				if (sym.getSymbolsSection() == currSection) {
 					int val = 0;
-					unsigned int adr = sym.getSymAdress();
+					unsigned int adr = sym.getSymAdress() - pc - 4;
 					adress[0] = adr >> 8;
 					adress[1] = (adr >> 4) & 0x0F;
 					adress[2] = adr & 0x0F;
+					symbolDefinedInSection = true;
 				}
 				else
 				{

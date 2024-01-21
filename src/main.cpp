@@ -1,5 +1,6 @@
 #include "../inc/assembler.h"
 #include "../inc/linker/linker.h"
+#include "../inc/emulator.h"
 #include <list>
 #include <string>
 
@@ -32,8 +33,15 @@ int main()
 	inputFiles.push_back("isr_timer.o");
 	inputFiles.push_back("isr_software.o");
 
+	placements.push_back("-place=my_code@0x40000000");
+	placements.push_back("-place=math@0xF0000000");
+
 	Linker l(inputFiles, "linked.hex", placements);
 
 	l.link();
+
+	Emulator emul("reg.txt","linked.dat");
+
+	emul.startEmulation();
 	
 }

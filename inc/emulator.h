@@ -11,7 +11,7 @@ using namespace std;
 class Emulator
 {
 public:
-	Emulator(string input, string output, string binary);
+	Emulator(string output, string binary);
 	~Emulator();
 
 	void startEmulation();
@@ -25,7 +25,7 @@ private:
 	void emulate();
 	void printReg();
 	
-	void executeInstr(uint32_t inst, uint32_t mod, uint32_t regA, uint32_t regB, uint32_t regC, uint32_t disp);
+	void executeInstr(uint32_t inst, uint32_t mod, uint32_t regA, uint32_t regB, uint32_t regC, int disp);
 
 	map<uint32_t, char> memory;
 	vector<uint32_t> GPReg, CSReg;
