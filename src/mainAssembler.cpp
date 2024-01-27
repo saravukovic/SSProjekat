@@ -1,27 +1,49 @@
 #include "../inc/assembler.h"
-#include "../inc/linker/linker.h"
-#include "../inc/emulator.h"
-#include <list>
 #include <string>
 
 using namespace std;
 
 
-int main()
+int main(int argc, char* argv[])
 {
-	Assembler as2("handler.s", "handler.o");
+	if (argc < 2)
+	{
+		cout << "Error! Too few arguments!" << endl;
+		return -1;
+	}
+
+	string input;
+	string output;
+	string first = argv[1];
+
+	if (first == "-o")
+	{
+		input = argv[3];
+		output = argv[2];
+	}
+	else
+	{
+		input = argv[1];
+		output = argv[1];
+	}
+
+	Assembler assembler(input, output);
+	assembler.assemble();
+
+
+/*	Assembler as2("handler.s", "handler.o");
 	Assembler as1("math.s", "math.o");
 	Assembler as("main.s", "main.o");
 	Assembler as4("isr_terminal.s", "isr_terminal.o");
 	Assembler as5("isr_timer.s", "isr_timer.o");
 	Assembler as3("isr_software.s", "isr_software.o");
 
-	as.assembler();
-	as1.assembler();
-	as2.assembler();
-	as3.assembler();
-	as4.assembler();
-	as5.assembler();
+	as.assemble();
+	as1.assemble();
+	as2.assemble();
+	as3.assemble();
+	as4.assemble();
+	as5.assemble();
 
 	list<string> inputFiles;
 	list<string> placements;
@@ -43,5 +65,13 @@ int main()
 	Emulator emul("reg.txt","linked.dat");
 
 	emul.startEmulation();
+*/
 	
 }
+
+/*
+./asembler -o handler.o handler.s 
+./asembler -o main.o main.s 
+./linker -hex  -place=my_code_main@0x40000000 -place=my_code_handler@0xC0000000 -o program.hex handler.o main.o 
+./emulator program.hex
+*/

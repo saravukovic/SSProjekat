@@ -20,7 +20,7 @@ public:
 	Assembler(string input, string output);
 	~Assembler();
 
-	void assembler();
+	void assemble();
 
 
 private:

@@ -1,0 +1,3 @@
+g++ -g -o asembler ./src/mainAssembler.cpp ./src/assembler.cpp ./src/symbolTable.cpp ./src/sectionTable.cpp ./src/literalTable.cpp ./src/relocationTable.cpp ./src/syntaxCheck.cpp
+g++ -g -o linker ./src/mainLinker.cpp ./src/linker/linker.cpp ./src/symbolTable.cpp ./src/sectionTable.cpp ./src/literalTable.cpp ./src/relocationTable.cpp ./src/syntaxCheck.cpp
+g++ -g -o emulator ./src/mainEmulator.cpp ./src/emulator.cpp ./src/syntaxCheck.cpp

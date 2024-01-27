@@ -39,6 +39,5 @@ private:
 	list<string> inputFilesLinker, inputFileNameArrLinker, placement;
 	string outputFileLinker, outputFileNameLinker;
 	string currSection;
-	list<string> formattedInputFile;
 	list<SectionDefinition*> sortedListOfSections;
 };

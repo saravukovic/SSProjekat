@@ -2,9 +2,15 @@
 
 Linker::Linker(list<string> input, string output, list<string> placement)
 {
-	inputFileNameArrLinker = input;
+	for(string i : input){
+		inputFileNameArrLinker.push_back(i);
+	}
+
 	outputFileNameLinker = output;
-	this->placement = placement;
+
+	for(string p : placement){
+		this->placement.push_back(p);
+	}
 	pc = 0;
 }
 
@@ -14,7 +20,7 @@ Linker::~Linker()
 
 void Linker::link()
 {
-	string path = "C:\\Users\\Sara\\Desktop\\ssproba\\";
+	string path = "././test/";
 	outputFileLinker = path + outputFileNameLinker;
 
 	for (string s : inputFileNameArrLinker) {
@@ -408,4 +414,3 @@ void Linker::createBinary()
 		}
 	}
 }
-

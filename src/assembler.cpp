@@ -86,11 +86,14 @@ void Assembler::secondPass()
 	}
 }
 
-void Assembler::assembler()
+void Assembler::assemble()
 {
-	string path = "C:\\Users\\Sara\\Desktop\\ssproba\\";
+	string path = "./test/";
 	inputFile = path + inputFileName;
 	outputFile = path + outputFileName;
+	if(inputFileName == outputFileName){
+		outputFile[outputFile.length() - 1] = 'o';
+	}
 	SectionDefinition::resetSectionID();
 	SymbolDefinition::resetSymID();
 	firstPass();
@@ -1468,8 +1471,8 @@ char Assembler::regToChar(string reg)
 	}
 	else
 	{
-		if (reg == "sp") return 14;
-		if (reg == "pc") return 15;
+		if (reg.compare("sp")) return 14;
+		if (reg.find("pc") != string::npos) return 15;
 	}
 	return 0;
 }

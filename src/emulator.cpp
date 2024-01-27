@@ -1,14 +1,14 @@
-#include "..\inc\emulator.h"
-#include "..\inc\syntaxCheck.h"
+#include "../inc/emulator.h"
+#include "../inc/syntaxCheck.h"
 
-Emulator::Emulator(string output, string binary) : GPReg(16, 0), CSReg(3, 0)
+Emulator::Emulator(string input) : GPReg(16, 0), CSReg(3, 0)
 {
-	string path = "C:\\Users\\Sara\\Desktop\\ssproba\\";
-	outputFile = path + output;
-	binaryFile = path + binary;
+	string path = "./test/";
+	outputFile = path + "reg.txt";
+	binaryFile = path + input.substr(0, input.size() - 4) + ".dat";
 	emul = false;
+
 	pc = 0x40000000;
-	
 }
 
 Emulator::~Emulator()
@@ -71,7 +71,7 @@ uint32_t Emulator::getInstruction(uint32_t source)
 {
 	uint32_t val = 0;
 	for (int i = 0; i < 4; i++) {
-		uint32_t c = ((uint32_t)memory.at(source + i) & 0xFF);
+		uint32_t c = ((uint32_t)memory[source + i] & 0xFF);
 		val |= ((uint32_t)(c << ((3 - i) * 8)));
 	}
 	return val;
@@ -215,7 +215,11 @@ void Emulator::executeInstr(uint32_t inst, uint32_t mod, uint32_t regA, uint32_t
 			GPReg[regA] = GPReg[regB] * GPReg[regC];
 			break;
 		case 0x3:
-			GPReg[regA] = GPReg[regB] / GPReg[regC];
+			if (GPReg[regC] != 0) {
+					GPReg[regA] = GPReg[regB] / GPReg[regC];
+			} else {
+					std::cerr << "Error: Division by zero!" << std::endl;
+			}
 			break;
 		default:
 			break;

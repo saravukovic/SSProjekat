@@ -2,16 +2,16 @@
 #include <string>
 #include <fstream>
 #include <iostream>
-#include <map>
-#include <vector>
 #include <iomanip>
+#include <vector>
+#include <map>
 
 using namespace std;
 
 class Emulator
 {
 public:
-	Emulator(string output, string binary);
+	Emulator(string input);
 	~Emulator();
 
 	void startEmulation();
