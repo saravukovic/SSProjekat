@@ -4,11 +4,11 @@
 #include <iostream>
 #include <map>
 #include <iomanip>
-#include "../symbolTable.h"
-#include "../sectionTable.h"
-#include "../literalTable.h"
-#include "../relocationTable.h"
-#include "../syntaxCheck.h"
+#include "symbolTable.h"
+#include "sectionTable.h"
+#include "literalTable.h"
+#include "relocationTable.h"
+#include "syntaxCheck.h"
 
 using namespace std;
 

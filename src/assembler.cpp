@@ -1166,7 +1166,15 @@ void Assembler::loadInstrHandler(string operand, string reg)
 	}
 	case REGLITMEM:
 	{
-		char rgs = regToChar(sm.str(1));
+		char rgs;
+		if(operand[4] != ' ')
+		{
+			rgs = regToChar(operand.substr(2, 3));
+		}
+		else 
+		{
+			rgs = regToChar(operand.substr(2, 2));
+		}
 		string literal = sm.str(2);
 
 		unsigned int adr = 0;
@@ -1471,8 +1479,8 @@ char Assembler::regToChar(string reg)
 	}
 	else
 	{
-		if (reg.compare("sp")) return 14;
-		if (reg.find("pc") != string::npos) return 15;
+		if (reg == "sp") return 14;
+		if (reg == "pc") return 15;
 	}
 	return 0;
 }

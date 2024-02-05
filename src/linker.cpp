@@ -1,4 +1,4 @@
-#include "../../inc/linker/linker.h"
+#include "../inc/linker.h"
 
 Linker::Linker(list<string> input, string output, list<string> placement)
 {
@@ -20,7 +20,7 @@ Linker::~Linker()
 
 void Linker::link()
 {
-	string path = "././test/";
+	string path = "./test/";
 	outputFileLinker = path + outputFileNameLinker;
 
 	for (string s : inputFileNameArrLinker) {

@@ -1,4 +1,4 @@
-#include "../inc/linker/linker.h"
+#include "../inc/linker.h"
 
 int main(int argc, char* argv[])
 {
