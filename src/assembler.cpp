@@ -492,15 +492,15 @@ void Assembler::instructionInSecondPass(string* instr)
 		currSec->addSectionBinaryContent(0x00);
 		currSec->addSectionBinaryContent(0x04);
 
-		currSec->addSectionBinaryContent(0x92);
-		currSec->addSectionBinaryContent(0xFE);
-		currSec->addSectionBinaryContent(0x00);
-		currSec->addSectionBinaryContent(0x00);
-
 		currSec->addSectionBinaryContent(0x91);
 		currSec->addSectionBinaryContent(0xEE);
 		currSec->addSectionBinaryContent(0x00);
 		currSec->addSectionBinaryContent(0x08);
+
+		currSec->addSectionBinaryContent(0x92);
+		currSec->addSectionBinaryContent(0xFE);
+		currSec->addSectionBinaryContent(0x0F);
+		currSec->addSectionBinaryContent(0xF8);
 
 		pc += 12;
 		break;
